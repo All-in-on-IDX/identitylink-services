@@ -1,6 +1,5 @@
 import { DID } from 'dids'
 import KeyResolver from '@ceramicnetwork/key-did-resolver'
-import CeramicClient from '@ceramicnetwork/http-client'
 import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver'
 
 const didJWT = require('did-jwt')
@@ -23,6 +22,8 @@ class ClaimMgr {
   }
 
   async setSecrets(secrets) {
+    const CeramicClient = await import('@ceramicnetwork/http-client')
+
     this.signerPrivate = secrets.KEYPAIR_PRIVATE_KEY
     this.signerPublic = secrets.KEYPAIR_PUBLIC_KEY
     this.issuerDomain = secrets.VERIFICATION_ISSUER_DOMAIN
