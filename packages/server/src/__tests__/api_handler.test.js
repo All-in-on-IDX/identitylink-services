@@ -60,4 +60,12 @@ describe('apiHandler', () => {
       done()
     })
   })
+
+  test('request myco', done => {
+    apiHandler.request_myco({}, {}, (err, res) => {
+      expect(err).toBeNull()
+      expect(res).not.toBeNull()
+      done()
+    })
+  })
 })

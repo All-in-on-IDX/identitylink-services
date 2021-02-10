@@ -4,12 +4,11 @@ const { RedisStore } = require('./store')
 
 class MyColoradoMgr {
   constructor() {
-    this.personal_access_token = null
     this.store = {}
   }
 
   isSecretsSet() {
-    return this.personal_access_token !== null
+    return true
   }
 
   setSecrets(secrets) {
