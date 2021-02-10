@@ -81,3 +81,11 @@ functions:
           method: post
           cors: true
           path: /api/v0/request-myco
+  verify-myco-webhook:
+    handler: src/api_handler.verify_myco_webhook
+    timeout: 30
+    events:
+      - http:
+          method: post
+          cors: true
+          path: /api/v0/verify-myco-webhook

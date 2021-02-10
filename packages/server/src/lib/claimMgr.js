@@ -76,6 +76,34 @@ class ClaimMgr {
       })
   }
 
+  async issueCredSubject({ did, credSubject }) {
+    if (!did) throw new Error('No did provided')
+    if (!credSubject) throw new Error('No credSubject provided')
+    const signer = didJWT.SimpleSigner(this.signerPrivate)
+    return didJWT
+      .createJWT(
+        {
+          sub: did,
+          nbf: Math.floor(Date.now() / 1000),
+          vc: {
+            '@context': ['https://www.w3.org/2018/credentials/v1'],
+            type: ['VerifiableCredential'],
+            credentialSubject: credSubject
+          }
+        },
+        {
+          issuer: `did:web:${this.issuerDomain}`,
+          signer
+        }
+      )
+      .then(jwt => {
+        return jwt
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
   decode(jwt) {
     if (!this.signerPublic) throw new Error('no keypair created yet')
     return didJWT.decodeJWT(jwt)

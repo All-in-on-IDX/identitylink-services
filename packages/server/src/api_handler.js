@@ -5,6 +5,7 @@ const TwitterRequestHandler = require('./api/twitter-request')
 const TwitterVerifyHandler = require('./api/twitter-verify')
 const DiscordVerifyHandler = require('./api/discord-verify')
 const MyColoradoRequestHandler = require('./api/myco-request')
+const MyColoradoVerifyHandler = require('./api/myco-verify-webhook')
 const DidDocumentHandler = require('./api/diddoc')
 
 const GithubMgr = require('./lib/githubMgr')
@@ -171,4 +172,14 @@ let myCoRequestHandler = new MyColoradoRequestHandler(myCoMgr, analytics)
 
 module.exports.request_myco = (event, context, callback) => {
   preHandler(myCoRequestHandler, event, context, callback)
+}
+
+let myCoVerifyHandler = new MyColoradoVerifyHandler(
+  myCoMgr,
+  claimMgr,
+  analytics
+)
+
+module.exports.verify_myco_webhook = (event, context, callback) => {
+  preHandler(myCoVerifyHandler, event, context, callback)
 }

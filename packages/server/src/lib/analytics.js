@@ -86,6 +86,13 @@ class Analytics {
     data.properties = { did_hash: hash(did), status }
     this._track(data)
   }
+
+  trackVerifyMyCo(did, status) {
+    let data = {}
+    data.event = 'verify_service_myco'
+    data.properties = { did_hash: hash(did), status }
+    this._track(data)
+  }
 }
 
 module.exports = Analytics
