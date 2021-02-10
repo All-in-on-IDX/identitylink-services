@@ -4,17 +4,20 @@ const GithubVerifyHandler = require('./api/github-verify')
 const TwitterRequestHandler = require('./api/twitter-request')
 const TwitterVerifyHandler = require('./api/twitter-verify')
 const DiscordVerifyHandler = require('./api/discord-verify')
+const MyColoradoRequestHandler = require('./api/myco-request')
 const DidDocumentHandler = require('./api/diddoc')
 
 const GithubMgr = require('./lib/githubMgr')
 const TwitterMgr = require('./lib/twitterMgr')
 const DiscordMgr = require('./lib/discordMgr')
 const ClaimMgr = require('./lib/claimMgr')
+const MyColoradoMgr = require('./lib/myCoMgr')
 const Analytics = require('./lib/analytics')
 
 let githubMgr = new GithubMgr()
 let twitterMgr = new TwitterMgr()
 let discordMgr = new DiscordMgr()
+let myCoMgr = new MyColoradoMgr()
 let claimMgr = new ClaimMgr()
 const analytics = new Analytics()
 
@@ -71,6 +74,7 @@ const preHandler = (handler, event, context, callback) => {
     !twitterMgr.isSecretsSet() ||
     !claimMgr.isSecretsSet() ||
     !githubMgr.isSecretsSet() ||
+    !myCoMgr.isSecretsSet() ||
     !discordMgr.isSecretsSet()
   ) {
     const secretsFromEnv = {
@@ -93,6 +97,7 @@ const preHandler = (handler, event, context, callback) => {
     githubMgr.setSecrets(config)
     twitterMgr.setSecrets(config)
     discordMgr.setSecrets(config)
+    myCoMgr.setSecrets(config)
     doHandler(handler, event, context, callback)
   } else {
     doHandler(handler, event, context, callback)
@@ -157,4 +162,13 @@ let discordVerifyHandler = new DiscordVerifyHandler(
 )
 module.exports.verify_discord = (event, context, callback) => {
   preHandler(discordVerifyHandler, event, context, callback)
+}
+
+/// /////////////////////
+// MyColorado
+/// ////////////////////
+let myCoRequestHandler = new MyColoradoRequestHandler(myCoMgr, analytics)
+
+module.exports.request_myco = (event, context, callback) => {
+  preHandler(myCoRequestHandler, event, context, callback)
 }
